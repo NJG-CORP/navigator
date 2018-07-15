@@ -101,4 +101,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     {
         return $this->password === $password;
     }
+
+    public static function isAdmin() : bool
+    {
+        return \Yii::$app->user->id == 100;
+    }
+
+    public static function getUserName($id) : string
+    {
+        return self::findIdentity($id)->username ?? 'Invalid user_id';
+    }
 }

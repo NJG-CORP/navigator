@@ -47,7 +47,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'POST tracing/' => 'tracing/store'
+                'POST tracing/' => 'tracing/store',
+                'tracing-results/list' => 'tracing/show',
+                'api/tracing-results' => 'tracing/api-show'
             ],
         ],
     ],
