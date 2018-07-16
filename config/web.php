@@ -49,7 +49,9 @@ $config = [
             'rules' => [
                 'POST tracing/' => 'tracing/store',
                 'tracing-results/list' => 'tracing/show',
-                'api/tracing-results' => 'tracing/api-show'
+                'tracing-results/export' => 'tracing/export',
+                'api/tracing-results' => 'tracing/api-show',
+
             ],
         ],
     ],

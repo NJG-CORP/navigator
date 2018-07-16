@@ -10,8 +10,11 @@ namespace app\controllers;
 
 
 use app\models\Tracing;
+use app\models\TracingEditForm;
+use app\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -46,7 +49,48 @@ class TracingController extends Controller
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return [
-            "data" => Tracing::prepareApi(Tracing::find()->select(['user_id','url','time'])->asArray()->all())
+            "data" => Tracing::prepareApi(Tracing::find()->select(['user_id', 'url', 'time'])->asArray()->all())
         ];
+    }
+
+    public function actionGetEditForm($id)
+    {
+        $TracingObj = Tracing::findOne($id);
+        if ($TracingObj === null) {
+            return '';
+        }
+        $model = new TracingEditForm();
+        $model->fill($TracingObj);
+        return $this->renderFile('@app/views/forms/tracing/edit.php', [
+            "model" => $model
+        ]);
+    }
+
+    public function actionUpdate()
+    {
+        if (Yii::$app->user->identity->isAdmin()) {
+            $model = new TracingEditForm();
+            $model->load(Yii::$app->request->post());
+            return $model->update() ? "OK" : "Error";
+        }
+        return '';
+    }
+
+    public function actionExport()
+    {
+
+        $data = "User;Url;Time;".PHP_EOL;
+        $model = Tracing::find()->all();
+        foreach ($model as $value) {
+            $data .= User::getUserName($value['user_id']). // Это костыль только для этой реализцаии, чтобы не писать авторизацию и тд по юзеру
+                ';' . $value->url .
+                ';' . $value->time .
+                PHP_EOL;
+        }
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/csv');
+        $headers->add('Content-Disposition','attachment; filename="export_' . date('d.m.Y') . '.csv"');
+        return $data;
     }
 }

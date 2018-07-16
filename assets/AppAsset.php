@@ -23,7 +23,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
-        'js/tracking.js'
+        'js/tracking.js',
+        'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

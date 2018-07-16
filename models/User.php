@@ -107,7 +107,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         return \Yii::$app->user->id == 100;
     }
 
-    public static function getUserName($id) : string
+    public static function getUserName(int $id) : string
     {
         return self::findIdentity($id)->username ?? 'Invalid user_id';
     }

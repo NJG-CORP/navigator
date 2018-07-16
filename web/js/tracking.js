@@ -20,7 +20,7 @@ $(document).ready(function () {
     //Слежение за нажатием на ссылку
     $("a").on("click",function () {
         //TODO
-        alert('Переход по ссылке');
+        alert('Переход по ссылке '+ $(this).attr('href'));
     });
 });
 
