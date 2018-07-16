@@ -68,11 +68,12 @@ class TracingController extends Controller
 
     public function actionUpdate()
     {
-        if (Yii::$app->user->identity->isAdmin()) {
-            $model = new TracingEditForm();
-            $model->load(Yii::$app->request->post());
-            return $model->update() ? "OK" : "Error";
-        }
+        if(!Yii::$app->user->isGuest)
+            if (Yii::$app->user->identity->isAdmin()) {
+                $model = new TracingEditForm();
+                $model->load(Yii::$app->request->post());
+                return $model->update() ? "OK" : "Error";
+            }
         return '';
     }
 
